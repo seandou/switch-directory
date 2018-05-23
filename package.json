@@ -1,0 +1,23 @@
+{
+  "name": "switch-directory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "bin": {
+    "sd": "./bin/sd"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seandou/switch-directory.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seandou/switch-directory/issues"
+  },
+  "homepage": "https://github.com/seandou/switch-directory#readme"
+}
