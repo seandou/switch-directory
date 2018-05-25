@@ -4,7 +4,8 @@
   "description": "",
   "main": "lib/index.js",
   "bin": {
-    "sd": "./bin/sd"
+    "sd-functions": "bin/sd-functions",
+    "sd-cli": "bin/sd-cli"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/seandou/switch-directory/issues"
   },
-  "homepage": "https://github.com/seandou/switch-directory#readme"
+  "homepage": "https://github.com/seandou/switch-directory#readme",
+  "dependencies": {
+    "commander": "^2.15.1",
+    "inquirer": "^5.2.0"
+  }
 }

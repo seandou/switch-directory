@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+'use strict'
+
+var program = require('commander')
+var packageInfo = require('./../package.json')
+
+program
+  .version(packageInfo.version)
+  .usage('[options] [args]')
+  .option('-a, --add [dir]', 'Add directory to list')
+  .option('-l, --list', 'Show all directories')
+  .option('-c, --clean', 'Show all directories')
+  .parse(process.argv)
+
+// if (program.args.length != 1) {
+//   program.help()
+// }
+
+console.log(program.args)
