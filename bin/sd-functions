@@ -8,5 +8,8 @@ function sdir() {
         $SDIR_BIN $@
     fi
 
-    cd $($SDIR_BIN -)
+    dir=$($SDIR_BIN -)
+    if [ -n "$dir" ]; then
+        cd $dir
+    fi
 }

@@ -25,6 +25,14 @@ program
   });
 
 program
+  .command('list')
+  .alias('l')
+  .description('show all dirs')
+  .action(function(dir, options){
+    dlist.printDirs()
+  });
+
+program
   .command('pre')
   .alias('-')
   .description('switch to previous dir')
