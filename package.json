@@ -8,7 +8,7 @@
     "sd-cli": "bin/sd-cli"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,10 @@
   "homepage": "https://github.com/seandou/switch-directory#readme",
   "dependencies": {
     "commander": "^2.15.1",
-    "inquirer": "^5.2.0"
+    "inquirer": "^5.2.0",
+    "lodash": "^4.17.10"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
   }
 }

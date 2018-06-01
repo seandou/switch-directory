@@ -2,19 +2,57 @@
 
 'use strict'
 
-var program = require('commander')
-var packageInfo = require('./../package.json')
+const program = require('commander')
+const inquirer = require('inquirer')
+
+const packageInfo = require('./../package.json')
+const dlist = require('../lib/')
 
 program
   .version(packageInfo.version)
   .usage('[options] [args]')
-  .option('-a, --add [dir]', 'Add directory to list')
-  .option('-l, --list', 'Show all directories')
-  .option('-c, --clean', 'Show all directories')
-  .parse(process.argv)
 
-// if (program.args.length != 1) {
-//   program.help()
-// }
+program
+  .command('add [dir]')
+  .alias('a')
+  .description('add dir to list')
+  .action(function(dir, options){
+    if (dir) {
+      dlist.addDir(dir)
+    } else {
+      dlist.addDir(process.cwd())
+    }
+  });
 
-console.log(program.args)
+program
+  .command('pre')
+  .alias('-')
+  .description('switch to previous dir')
+  .action(function(options){
+    console.log(dlist.previousDir())
+  });
+
+
+program
+  .command('clean')
+  .alias('c')
+  .description('clean the list')
+  .action(function(dir, options){
+    dlist.cleanDirs()
+  });
+
+program.parse(process.argv);
+
+// switch 
+if (program.args.length == 0) {
+    let dirs = dlist.getDirList()
+    if (dirs.length == 0) {
+      return
+    }
+
+    inquirer.prompt([
+      { type: 'list', name: 'dir', message: 'Choose a dir', choices: dirs }
+    ]).then(function(answers) {
+        dlist.floatDir(answers.dir)
+    });
+}

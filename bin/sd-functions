@@ -3,5 +3,10 @@
 # sdir wrapper
 function sdir() {
     local SDIR_BIN=$(which sdir)
-    $SDIR_BIN $@
+
+    if [[ ! "$@" = "-" ]]; then
+        $SDIR_BIN $@
+    fi
+
+    cd $($SDIR_BIN -)
 }
