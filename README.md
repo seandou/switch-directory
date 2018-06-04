@@ -26,8 +26,20 @@ function sd() {
 ## Usage
 
 ```
-sd add [dir]
-sd
+  Usage: sdir [options] [args]
+
+  Options:
+
+    -V, --version  output the version number
+    -h, --help     output usage information
+
+  Commands:
+
+    add|a [dir]    add dir to list
+    list|l         show all dirs
+    remove|rm      remove item from dirs
+    pre|-          switch to previous dir
+    clean|c        clean the list
 ```
 
 
