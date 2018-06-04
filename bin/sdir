@@ -28,8 +28,27 @@ program
   .command('list')
   .alias('l')
   .description('show all dirs')
-  .action(function(dir, options){
+  .action(function(options){
     dlist.printDirs()
+  });
+
+program
+  .command('remove')
+  .alias('rm')
+  .description('remove item from dirs')
+  .action(function(options){
+    let dirs = dlist.getDirSelection(process.cwd())
+    if (dirs.length == 0) {
+      return
+    }
+    inquirer.prompt([{ 
+      type: 'checkbox', 
+      name: 'dir', 
+      message: 'Choose dirs to remove', 
+      choices: dirs
+    }]).then(function(answers) {
+        dlist.removeDirs(answers.dir)
+    });
   });
 
 program
@@ -45,7 +64,7 @@ program
   .command('clean')
   .alias('c')
   .description('clean the list')
-  .action(function(dir, options){
+  .action(function(options){
     dlist.cleanDirs()
   });
 
