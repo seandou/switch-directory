@@ -77,9 +77,13 @@ if (program.args.length == 0) {
       return
     }
 
-    inquirer.prompt([
-      { type: 'list', name: 'dir', message: 'Choose a dir', choices: dirs }
-    ]).then(function(answers) {
+    inquirer.prompt([{
+      type: 'list',
+      name: 'dir',
+      message: 'Choose a dir',
+      choices: dirs,
+      pageSize: 10
+    }]).then(function(answers) {
         dlist.floatDir(answers.dir)
     });
 }
