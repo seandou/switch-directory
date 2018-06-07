@@ -5,8 +5,25 @@
 const program = require('commander')
 const inquirer = require('inquirer')
 
+const Promise = require('promise')
+const fuzzy = require('fuzzy')
+
 const packageInfo = require('./../package.json')
 const dlist = require('../lib/')
+
+inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
+
+function genFilter(data) {
+  return function (answers, input) {
+    input = input || '';
+    return new Promise(function(resolve) {
+      let fuzzyResult = fuzzy.filter(input, data);
+      resolve(fuzzyResult.map(function(el) {
+        return el.original;
+      }))
+    })
+  }
+}
 
 program
   .version(packageInfo.version)
@@ -78,10 +95,10 @@ if (program.args.length == 0) {
     }
 
     inquirer.prompt([{
-      type: 'list',
+      type: 'autocomplete',
       name: 'dir',
       message: 'Choose a dir',
-      choices: dirs,
+      source: genFilter(dirs),
       pageSize: 10
     }]).then(function(answers) {
         dlist.floatDir(answers.dir)

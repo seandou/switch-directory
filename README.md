@@ -43,8 +43,3 @@ function sd() {
 ```
 
 
-
-## TODO
-
-- autocompletion
-
