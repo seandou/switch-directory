@@ -15,11 +15,11 @@ inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
 
 function genFilter(data) {
   return function (answers, input) {
-    input = input || '';
+    input = input || ''
     return new Promise(function(resolve) {
-      let fuzzyResult = fuzzy.filter(input, data);
+      let fuzzyResult = fuzzy.filter(input, data)
       resolve(fuzzyResult.map(function(el) {
-        return el.original;
+        return el.original
       }))
     })
   }
@@ -39,7 +39,7 @@ program
     } else {
       dlist.addDir(process.cwd())
     }
-  });
+  })
 
 program
   .command('list')
@@ -47,7 +47,7 @@ program
   .description('show all dirs')
   .action(function(options){
     dlist.printDirs()
-  });
+  })
 
 program
   .command('remove')
@@ -65,8 +65,8 @@ program
       choices: dirs
     }]).then(function(answers) {
         dlist.removeDirs(answers.dir)
-    });
-  });
+    })
+  })
 
 program
   .command('pre')
@@ -74,7 +74,7 @@ program
   .description('switch to previous dir')
   .action(function(options){
     console.log(dlist.previousDir())
-  });
+  })
 
 
 program
@@ -83,9 +83,9 @@ program
   .description('clean the list')
   .action(function(options){
     dlist.cleanDirs()
-  });
+  })
 
-program.parse(process.argv);
+program.parse(process.argv)
 
 // switch 
 if (program.args.length == 0) {
@@ -102,5 +102,5 @@ if (program.args.length == 0) {
       pageSize: 10
     }]).then(function(answers) {
         dlist.floatDir(answers.dir)
-    });
+    })
 }
