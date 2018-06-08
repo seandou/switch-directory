@@ -1,11 +1,11 @@
 {
   "name": "switch-directory",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "main": "lib/index.js",
   "bin": {
     "sd-functions": "bin/sd-functions",
-    "sd-cli": "bin/sd-cli"
+    "sdir": "bin/sdir"
   },
   "scripts": {
     "test": "mocha"
