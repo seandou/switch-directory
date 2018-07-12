@@ -1,15 +1,22 @@
 #!/usr/bin/env bash
 
-# sdir wrapper
-function sdir() {
-    local SDIR_BIN=$(which sdir)
+SD_CLI=$(which sd-cli)
 
-    if [[ ! "$@" = "-" ]]; then
-        $SDIR_BIN $@
-    fi
-
-    dir=$($SDIR_BIN -)
+function swithDir() {
+    local dir=$($SD_CLI -)
     if [ -n "$dir" ]; then
         cd $dir
     fi
+}
+
+function swichToDefault() {
+    $SD_CLI $@
+    swithDir
+}
+
+function swichTo() {
+    case "$@" in
+        -) swithDir;;
+        *) swichToDefault $@;;
+    esac
 }

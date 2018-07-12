@@ -1,0 +1,130 @@
+#!/usr/bin/env node
+
+'use strict'
+
+const program = require('commander')
+const inquirer = require('inquirer')
+
+const Promise = require('promise')
+const fuzzy = require('fuzzy')
+
+const packageInfo = require('./../package.json')
+const sdir = require('../lib/')
+
+inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
+
+function genFilter(data) {
+  return function (answers, input) {
+    input = input || ''
+    return new Promise(function(resolve) {
+      let fuzzyResult = fuzzy.filter(input, data)
+      resolve(fuzzyResult.map(function(el) {
+        return el.original
+      }))
+    })
+  }
+}
+
+program
+  .version(packageInfo.version)
+  .usage('[options] [args]')
+
+program
+  .command('filter [keyword] [from]')
+  .alias('f')
+  .description('swith to filtered dirs')
+  .action(function(keyword, from) {
+    let dirs = sdir.filterDirsByKeywords(keyword, from)
+
+    if (dirs.length == 0) {
+      sdir.saveCurrentDir(process.cwd())
+    } else if (dirs.length == 1) {
+      sdir.saveCurrentDir(dirs[0])
+    } else {
+      inquirer.prompt([{
+        type: 'autocomplete',
+        name: 'dir',
+        message: 'Choose a dir',
+        source: genFilter(dirs),
+        pageSize: 10
+      }]).then(function(answers) {
+        sdir.saveCurrentDir(answers.dir)
+      })
+    }
+  })
+
+program
+  .command('add [dir]')
+  .alias('a')
+  .description('add dir to list')
+  .action(function(dir, options) {
+    if (dir) {
+      sdir.addDir(dir)
+    } else {
+      sdir.addDir(process.cwd())
+    }
+  })
+
+program
+  .command('list')
+  .alias('l')
+  .description('show all dirs')
+  .action(function(options) {
+    sdir.printDirs()
+  })
+
+program
+  .command('remove')
+  .alias('rm')
+  .description('remove item from dirs')
+  .action(function(options) {
+    let dirs = sdir.getDirSelection(process.cwd())
+    if (dirs.length == 0) {
+      return
+    }
+    inquirer.prompt([{ 
+      type: 'checkbox', 
+      name: 'dir', 
+      message: 'Choose dirs to remove', 
+      choices: dirs
+    }]).then(function(answers) {
+        sdir.removeDirs(answers.dir)
+    })
+  })
+
+program
+  .command('current')
+  .alias('-')
+  .description('switch to current dir')
+  .action(function(options) {
+    console.log(sdir.currentDir())
+  })
+
+program
+  .command('clean')
+  .alias('c')
+  .description('clean the list')
+  .action(function(options) {
+    sdir.cleanDirs()
+  })
+
+program.parse(process.argv)
+
+// switch 
+if (program.args.length == 0) {
+  let dirs = sdir.getDirs()
+  if (dirs.length == 0) {
+    return
+  }
+
+  inquirer.prompt([{
+    type: 'autocomplete',
+    name: 'dir',
+    message: 'Choose a dir',
+    source: genFilter(dirs),
+    pageSize: 10
+  }]).then(function(answers) {
+      sdir.floatDir(answers.dir)
+      sdir.saveCurrentDir(answers.dir)
+  })
+}
